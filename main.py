@@ -8,8 +8,13 @@ def main() -> None:
         data = json.load(json_file)
     for player_name, player_data in data.items():
         race_data = player_data.get("race", {})
+        race_name = race_data.get("name")
+
+        if not race_name:
+            continue
+
         race, _ = Race.objects.get_or_create(
-            name=race_data.get("name"),
+            name=race_name,
             defaults={"description": race_data.get("description", "")}
         )
         for skill_data in race_data.get("skills", []):
